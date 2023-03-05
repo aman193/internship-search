@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 const Internship = require("../Schemas/internship");
 const { isAuthenticated } = require("../passportConfig");
-
+const { findById } = require("../Schemas/internship");
+const { email } = require("../dev");
+const { nodeMailer } = require("../nodemailerConfig");
 // Get all internships
 router.get("/internships", async (req, res) => {
   try {
@@ -51,6 +53,21 @@ router.put("/editinternship", isAuthenticated, async (req, res) => {
 router.put("/applyforinternship", isAuthenticated, async (req, res) => {
   try {
     await Internship.findByIdAndUpdate(req.body._id, req.body);
+    const internship = await Internship.findById(req.body._id).populate(
+      "postedBy",
+      "email"
+    );
+
+    // Send mails
+    const mailOptions = {
+      from: email,
+      to: internship.postedBy.email,
+      subject: `Application for ${internship.title} internship`,
+      text: `${req.user?.name} applied for ${internship.title} role.`,
+    };
+
+    nodeMailer(mailOptions);
+
     res.status(201).send("applied Successfully!");
   } catch (error) {
     res.status(500).send(error);
