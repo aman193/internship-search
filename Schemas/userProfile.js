@@ -20,6 +20,20 @@ const profileSchema = mongoose.Schema({
     type: String,
     default: "",
   },
+  mobileNumber: {
+    type: String,
+  },
+  address: {
+    city: {
+      type: String,
+    },
+    state: {
+      type: String,
+    },
+    pincode: {
+      type: String,
+    },
+  },
   education: {
     collegeName: {
       type: String,

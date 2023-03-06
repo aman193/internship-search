@@ -63,6 +63,15 @@ router.put("/editinternship", isAuthenticated, async (req, res) => {
   }
 });
 
+router.put("/sendmessage", isAuthenticated, async (req, res) => {
+  try {
+    await Internship.findByIdAndUpdate(req.body._id, req.body);
+    res.status(201).send("updated Successfully!");
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 // add current userId in applicants array
 router.put("/applyforinternship", isAuthenticated, async (req, res) => {
   try {
