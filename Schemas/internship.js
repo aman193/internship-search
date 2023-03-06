@@ -19,8 +19,27 @@ const internshipSchema = mongoose.Schema({
   },
   applicants: [
     {
-      type: ObjectId,
-      ref: "User",
+      userId: {
+        type: ObjectId,
+        ref: "User",
+      },
+      resume: {
+        type: String,
+      },
+      coverLetter: {
+        type: String,
+      },
+    },
+  ],
+  messages: [
+    {
+      userId: {
+        type: ObjectId,
+        ref: "User",
+      },
+      message: {
+        type: String,
+      },
     },
   ],
   duration: {

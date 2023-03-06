@@ -15,6 +15,17 @@ router.get("/internships", async (req, res) => {
   }
 });
 
+router.get("/myinternships", async (req, res) => {
+  try {
+    const internships = await Internship.find({
+      postedBy: { $eq: req.user.id },
+    });
+    return res.status(201).send(internships);
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+});
+
 // Get all applicants for a particular internship posted by current user
 router.get("/applicants", isAuthenticated, async (req, res) => {
   try {
@@ -42,6 +53,9 @@ router.post("/createinternship", isAuthenticated, async (req, res) => {
 // Edit internship deatails
 router.put("/editinternship", isAuthenticated, async (req, res) => {
   try {
+    if (req.user?.id !== req.body?.postedBy) {
+      return res.status(400).send("Only recruiter can edit internship.");
+    }
     await Internship.findByIdAndUpdate(req.body._id, req.body);
     res.status(201).send("updated Successfully!");
   } catch (error) {

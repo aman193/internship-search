@@ -7,20 +7,40 @@ const profileSchema = mongoose.Schema({
     require: true,
   },
   name: {
-    type: String,
-    require: true,
+    firstName: {
+      type: String,
+      require: true,
+    },
+    lastName: {
+      type: String,
+      require: true,
+    },
   },
-  college: {
+  DOB: {
     type: String,
-    require: true,
+    default: "",
   },
-  cgpa: {
-    type: Decimal128,
-    require: true,
+  education: {
+    collegeName: {
+      type: String,
+      require: true,
+    },
+    degree: {
+      type: String,
+    },
+    cgpa: {
+      type: Decimal128,
+    },
+    startDate: {
+      type: Date,
+    },
   },
   experience: {
     type: Number,
     require: true,
+  },
+  skills: {
+    type: Array,
   },
   updatedOn: {
     type: Date,
